@@ -1,20 +1,20 @@
-const axios = require("axios");
+const axios = require('axios');
 const fs = require('fs');
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const getCurrentMoscowTime = () => {
-    const date = new Date();
-    // Получаем время UTC+3
-    const moscowTime = new Date(date.getTime() + 3 * 60 * 60 * 1000);
-    return moscowTime.toISOString().replace('T', ' ').substring(0, 19);
+    const now = new Date();
+    return now.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
 };
 
-;(async () => {
+(async () => {
     try {
         console.log('Goyda Net By [Cryptohomo Industries]\n\n');
-        const addressList = await fs.readFileSync('keyword.txt', 'utf-8');
-        const addressListArray = await addressList.split('\n');
+        const addressList = fs.readFileSync('keyword.txt', 'utf-8');
+        const addressListArray = addressList.split('\n');
+
+        const GAIA_API_KEY = 'ключ сюда'; 
 
         for (let index = 11; index < addressListArray.length; index++) {
             const Wallet = addressListArray[index];
@@ -22,7 +22,7 @@ const getCurrentMoscowTime = () => {
 
             try {
                 const response = await axios.post(
-                    'https://.us.gaianet.network/v1/chat/completions',
+                    'https://bybit.gaia.domains/v1/chat/completions',
                     {
                         'messages': [
                             {
@@ -38,18 +38,16 @@ const getCurrentMoscowTime = () => {
                     {
                         headers: {
                             'accept': 'application/json',
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${GAIA_API_KEY}` 
                         }
                     }
                 );
 
                 console.log("Response: [" + response.data.choices[0].message.content + "]\n");
-                
-                
                 console.log("Last message sent at (MSK, UTC+3): " + getCurrentMoscowTime() + "\n");
 
-                                
-                await delay(10);
+                await delay(1000);
 
             } catch (postError) {
                 console.error("Error during axios post: ", postError);
