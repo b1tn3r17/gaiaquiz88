@@ -22,7 +22,7 @@ const getCurrentMoscowTime = () => {
 
             try {
                 const response = await axios.post(
-                    'https://bybit.gaia.domains/v1/chat/completions',
+                    'https://bitner.gaia.domains/v1/chat/completions',
                     {
                         'messages': [
                             {
